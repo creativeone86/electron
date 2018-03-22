@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^5.0.1",
     "electron": "^1.8.4",
     "fluent-ffmpeg": "^2.1.2"
   }

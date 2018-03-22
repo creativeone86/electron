@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+</head>
+<body>
+<form>
+	<div>
+		<label for="name">Enter your todo</label>
+		<input type="text" id="name" autofocus/>
+	</div>
+	<button type="submit" id="addTodo">Add</button>
+</form>
+<script>
+	document.querySelector('form').addEventListener('submit', (event) => {
+		event.preventDefault();
+
+		debugger;
+	});
+</script>
+</body>
+</html>

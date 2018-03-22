@@ -17,6 +17,13 @@ const menuTemplate = [
 				click: createAddWindow
 			},
 			{
+				label: 'Clear all tasks',
+				accelerator: 'CommandOrControl+Alt+C',
+				click: () => {
+					mainWindow.webContents.send('todo:clear');
+				}
+			},
+			{
 				label: 'Quit',
 				accelerator: 'CommandOrControl+Q',
 				click: () => {

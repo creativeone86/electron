@@ -3,7 +3,9 @@ require('dotenv').config();
 const {
 	app,
 	BrowserWindow,
-	Menu
+	Menu,
+	globalShortcut,
+	ipcMain
 } = electron;
 const menuTemplate = [
 	{
@@ -11,10 +13,12 @@ const menuTemplate = [
 		submenu: [
 			{
 				label: 'Add task',
+				accelerator: 'CommandOrControl+N',
 				click: createAddWindow
 			},
 			{
 				label: 'Quit',
+				accelerator: 'CommandOrControl+Q',
 				click: () => {
 					app.quit();
 				}
@@ -34,25 +38,36 @@ function createAddWindow() {
 	});
 
 	addWindow.loadURL(`file://${__dirname}/add.html`);
+	addWindow.on('closed', () => addWindow = null);
 }
+
+// ips listeners
+ipcMain.on('todo:add', (event, todo) => {
+	mainWindow.webContents.send('todo:add', todo);
+	addWindow.close();
+});
+
 
 app.on('ready', () => {
 	mainWindow = new BrowserWindow({});
 	mainWindow.loadURL(`file://${__dirname}/main.html`);
-
 	mainWindow.on('closed', () => app.quit());
-	// mainWindow.maximize();
-
 	const mainMenu = Menu.buildFromTemplate(menuTemplate);
 	Menu.setApplicationMenu(mainMenu);
+});
+
+app.on('will-quit', () => {
+	globalShortcut.unregisterAll();
 });
 
 if(process.env.MODE === 'development') {
 	menuTemplate.push({
 		label: 'Developer',
 		submenu: [
+			{role: 'reload'},
 			{
 				label: 'Toggle debugged',
+				accelerator: 'CommandOrControl+D',
 				click: (item, focusedWindow) => {
 					focusedWindow.toggleDevTools();
 				}
